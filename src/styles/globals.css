@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+html{
+    background-color: rgb(241, 241, 241);
+}
+.line-nav{
+    border-right: 3px solid rgb(241, 241, 241);
+}
+.line-bar{
+    border-top: 3px solid rgb(241, 241, 241);
+}
+.body tr:nth-child(odd){
+    background-color: rgb(255, 255, 255);  
+    border-radius: 30%;
+    background-color: rgba(0, 0, 0, 0.178);
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+.table-div{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+/* Automatic Serial Number Row */
+.css-serial {
+ counter-reset: serial-number; /* Set the serial number counter to 0 */
+}
+.css-serial td:first-child:before {
+ counter-increment: serial-number; /* Increment the serial number counter */
+ content: counter(serial-number); /* Display the counter */
+ position: absolute;
+ left: 40%;
+ font-weight: bold;
+}
