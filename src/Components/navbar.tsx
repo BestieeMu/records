@@ -4,6 +4,7 @@ import LogoIcon from '../assets/logo.png'
 import { auth } from "../../firebase/clientApp";
 import { signOut } from "firebase/auth";
 import { Toaster, toast } from "react-hot-toast";
+import { ImExit } from 'react-icons/im'
 const NavBar = () => {
 
   const logOut = (e: any) =>{
@@ -19,7 +20,7 @@ signOut(auth).then(() => {
 
   return (
    <>
-    <div className="bg-white h-12 flex items-center justify-between w-full fixed top-0">
+    <div className="bg-white h-12 flex items-center z-10 justify-between w-full fixed top-0">
       {/* logo */}
       <div className="flex items-center gap-5">
       <div className="bg-white h-12 line-nav w-14 flex items-center justify-center">
@@ -40,7 +41,7 @@ signOut(auth).then(() => {
       <div className="flex items-center gap-3 bg-white h-12 mr-14">
 <div className='w-10 h-10 bg-white flex items-center h-12 justify-center'>
 </div>
-<button className="p-1 w-32 bg-red-500 rounded text-white" onClick={logOut}>log out</button>
+<div className=" rounded text-red-500 text-3xl cursor-pointer" onClick={logOut}><ImExit /></div>
       </div>
       <Toaster
   position="top-center"

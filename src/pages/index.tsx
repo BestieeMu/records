@@ -1,10 +1,14 @@
+'use client'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClipboard,
   faPlus,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState
+} from "react";
 import {
   doc,
   collection,
@@ -15,13 +19,12 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../../firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocument } from "react-firebase-hooks/firestore";
 import { auth } from "../../firebase/clientApp";
 import NavBar from "../Components/navbar";
-import Login from "./login";
-// import Admin from "./admin";
-import { useRouter } from "next/router";
-import Admin from "./admin";
+
+import { withAuth } from "@/hook/Auth";
+
+
 
 const Home = () => {
   const [quote, setQuote] = useState<any>("");
@@ -31,46 +34,14 @@ const Home = () => {
   const [badDevice, setBadDevice] = useState<any>("");
   const [data, setData] = useState<any>([]);
   const [isloading, setIsLoading] = useState<boolean>(true);
-  // const [isloadingUser, setIsLoadingUser] = useState<boolean>(true);
   const [userId, setUserId] = useState<any>("");
   const [adminId, setAdminId] = useState<any>("");
   const [user, loading, error] = useAuthState(auth);
   const [user_name, setUser_name] = useState<any>("");
 
-  const router = useRouter();
-
-  //  useEffect(() => {
-  //   if(!loading){
-
-  //     if(userId === adminId){
-  //      router.push('/admin')
-  //     }
-  //   }
-  // }, [])
-
-  // // validatin if the user is admin or
-  let adminRef = doc(firestore, "admin", `${user?.uid}`);
-
-  const admin = async () => {
-    const docRef = adminRef;
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setAdminId(docSnap.data().id);
-      // console.log(docSnap.data().id);
-      // console.log(userId);
-      if (docSnap.data().id === userId) {
-        console.log("admin user log in");
-      } else {
-        console.log("none admin log in");
-      }
-    } else {
-      // docSnap.data() will be undefined in this case
-    }
-  };
-  //call the admin function if user val changes
 
   useEffect(() => {
+
     const getQuotes = async () => {
       const response = await fetch("https://type.fit/api/quotes");
       const data = await response.json();
@@ -82,20 +53,29 @@ const Home = () => {
       setInterval(change, 50000);
     };
     getQuotes();
+
   }, []);
+
 
   const clearForm = () => {
     setBadDevice("");
     setDevice("");
     setGoodDevice("");
   };
+
+
   const sendToDatabase = async (e: any) => {
+
     e.preventDefault();
     setShowAddForm(!showAddForm);
     clearForm();
+
     if (device === "" || goodDevice === 0 || badDevice === 0) {
+
       alert("error");
+
     } else {
+
       if (user) {
         let good: number = +goodDevice;
         let bad: number = +badDevice;
@@ -104,6 +84,8 @@ const Home = () => {
         const now = new Date();
         const randomId = Math.random();
 
+
+        // sending the input value from the modal to the DB
         await setDoc(
           doc(firestore, "users", `${user.uid}`, "tasks", `${randomId}`),
           {
@@ -119,21 +101,26 @@ const Home = () => {
     }
   };
 
-  // collection ref
-  let colref = collection(firestore, "users", `${user?.uid}`, "tasks");
 
   // get data
   useEffect(() => {
-  const userInfo = async () => {
-    const docRef = doc(firestore, "users", `${user?.uid}`);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("Document data:", );
-      setUser_name(docSnap.data().user_name)
-    } 
-  }
-  userInfo();
- 
+
+    // collection ref
+    let colref = collection(firestore, "users", `${user?.uid}`, "tasks");
+
+
+    // this function gets the users information like the users name and email
+    const userInfo = async () => {
+      const docRef = doc(firestore, "users", `${user?.uid}`);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+
+        setUser_name(docSnap.data().user_name)
+      }
+    }
+    userInfo();
+
+
     const getTableData = () => {
       // get data using the colref which is the collection ref
       onSnapshot(colref, (snaoshot: any) => {
@@ -149,37 +136,67 @@ const Home = () => {
       }
     };
 
+
+    // run the get data finction after 2seconds
     setTimeout(() => {
       getTableData();
     }, 2000);
 
     setUserId(user?.uid);
-    admin();
+
+
+
   }, [user]); ////////
+
 
   // delete document/////////////
   const deleteDocument = (idDoc: any) => {
     deleteDoc(doc(firestore, "users", `${user?.uid}`, "tasks", `${idDoc}`));
   }; ///////
 
+
   // check total work done by adding up total task
   let totalWork = data.reduce((total: any, currentValue: any) => {
     return total + currentValue.total_device_repair;
   }, 0);
+
 
   // check total good device done by adding up all the good devices
   let totalGood = data.reduce((total: any, currentValue: any) => {
     return total + currentValue.good_device;
   }, 0);
 
+
   // check total bad device done by adding up all the bad devices
   let totalBad = data.reduce((total: any, currentValue: any) => {
     return total + currentValue.bad_device;
   }, 0);
 
+
   const showModal = () => {
     setShowAddForm(!showAddForm);
   };
+
+
+
+
+  //       // storing the admin id to local storage to use it and verify if the loged in user is admin or not
+  // if (typeof window !== 'undefined') {
+  //   if(adminId){
+  //     if (adminId === userId ) {
+  //       localStorage.setItem("adminId", JSON.stringify(adminId));
+
+  //       let LocalId: any = localStorage.getItem('adminId');
+  //       setValidationId(JSON.parse(LocalId));
+  //       console.log(validationId,`admin id from db : ${adminId}` ,`current user id: ${userId}` );
+  //     }
+  //    }
+  // }
+
+  //  console.log(adminId, 'hello is now here');
+
+
+
   const FormGroup = (
     <>
       <div
@@ -253,14 +270,19 @@ const Home = () => {
     </>
   );
 
+
+
   return (
     <>
-      {!user && <Login />}
-      {loading && "loading..."}
-      {
-        user && adminId === userId ? (
-          <Admin />
-        ) : (
+
+      {loading ? (<>
+        <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
+          <h1>Loading...</h1>
+        </div>
+      </>)
+        :
+        user &&
+        (
           <>
             <div className={user ? "block relative" : "hidden"}>
               {FormGroup}
@@ -414,4 +436,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withAuth(Home);
