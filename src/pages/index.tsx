@@ -111,6 +111,7 @@ const Home = () => {
 
     // this function gets the users information like the users name and email
     const userInfo = async () => {
+
       const docRef = doc(firestore, "users", `${user?.uid}`);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -277,7 +278,7 @@ const Home = () => {
 
       {loading ? (<>
         <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
-          <h1>Loading...</h1>
+        <div className="custom-loader"></div>
         </div>
       </>)
         :
@@ -289,10 +290,8 @@ const Home = () => {
               <div className={user ? "block" : "hidden"}>
                 <NavBar />
               </div>
-              <div className="w-full flex mt-12 pb-20 overflow-hidden">
-                <div className="bg-white w-14 hidden line-bar px-2 fixed top-12 h-screen">
-                  left
-                </div>
+              <div className="w-full flex mt-12 pb-20 ">
+              
                 {/* the main section for the content */}
                 <div className=" over-flow-scroll w-full px-5 ml-14 py-3">
                   {/* first components which is the welcome message and action button */}
@@ -436,4 +435,4 @@ const Home = () => {
   );
 };
 
-export default withAuth(Home);
+export default Home;

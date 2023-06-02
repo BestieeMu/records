@@ -5,10 +5,12 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/clientApp';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '../../firebase/clientApp';
+import exp from 'constants';
 
 export const withAuth = (MyPages: any) => {
 
     return function WithAuth(props: any) {
+
         const [user, loading, error] = useAuthState(auth);
         const router = useRouter();
     
