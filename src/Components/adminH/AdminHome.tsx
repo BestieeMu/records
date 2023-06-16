@@ -184,6 +184,7 @@ const AdminHome = () => {
   const [userD, setUserD] = useState<any>([]);
   const [userWorkData, setUserWorkData] = useState<any[]>([]);
 
+// first logic
   useEffectOnce(() => {
     adminData &&  adminData.map((data: any) => {
       let colref = collection(firestore, "users", `${data.user?.id}`, "tasks");
@@ -203,7 +204,7 @@ const AdminHome = () => {
     });
   });
 
-
+// second logic
   useEffectOnce(() => {
     users && users.map((user: any) => {
       setUserData((prevData: any) => {
@@ -219,25 +220,11 @@ const AdminHome = () => {
       });
     });
 
+
+
   });
 
-  const arr: any = [
-    ...userData
-  ];
-
-  useEffectOnce(() => {
-    const mappedData = arr.map((item: any) => {
-      return {
-        userName: item.userName,
-        totalWork: item.userWork.reduce((total: number, workItem: any) => total + workItem.totalBad, 0)
-      };
-    });
-
-    setUserWorkData(mappedData);
-  },);
-
-  console.log(userWorkData);
-
+// using final result
   const usersData = [
     ["condition", "Amount of devices"],
     ...userWorkData?.map((item: any) => [item.userName, item.totalWork])

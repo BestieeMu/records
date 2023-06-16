@@ -28,20 +28,17 @@ export const withAuth = (MyPages: any) => {
 
             } else {
 
-                if (!user) {
-                    router.push('/login');
-                    return <div><h1>Loading...</h1></div>;
+                if (!user) {  
+                    return router.push('/login');
                 } else {
                     if (docSnap.exists()) {
 
-                        if (typeof window !== 'undefined') {
                             if (user?.uid === docSnap.data().id) {
                                 router.push('/admin');
 
                                 return <div><h1>Loading...</h1></div>;
                             }
-
-                        }
+                      
 
                     } else {
 

@@ -26,17 +26,13 @@ import { signOut } from "firebase/auth";
 
 
 const Admin = () => {
-
+  const [navigator, setNavigator] = useState<any>('')
   const [user, loading, error] = useAuthState(auth);
-
-  const router = useRouter()
 
   const { updateData } = useContext(MainContext)
 
   const { users, getUserDate } = useContext(MainContext)
 
-
-  const { paramsName = [] } = router.query
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,10 +109,15 @@ const Admin = () => {
                 <h1 className="text-2xl font-medium mt-20">Admin Panel</h1>
                 <div className="mt-20">
                   <ul className="flex flex-col gap-7 text-xl">
-                    <Link href='/admin'><li className="flex items-center text-white gap-3 "><span className="text-white"><AiFillHome /></span>Home</li></Link>
-                    <Link href='/admins'><li className="flex items-center text-white gap-3 "><span className="text-white"><MdAdminPanelSettings /></span>Admins</li></Link>
-                    <Link href='/users'><li className="flex items-center text-white gap-3 "><span className="text-white"><MdEngineering /></span>Engineers</li></Link>
-                    <Link href='/works'><li className="flex items-center text-white gap-3 "><span className="text-white"><GiAutoRepair /></span>Works</li></Link>
+
+                   <li className="flex cursor-pointer items-center text-white gap-3 " onClick={() => setNavigator('admin')}><span className="text-white"><AiFillHome /></span>Home</li>
+
+                  <li className="flex cursor-pointer items-center text-white gap-3 " onClick={() => setNavigator('admins')}><span className="text-white"><MdAdminPanelSettings /></span>Admins</li>
+
+                  <li className="flex cursor-pointer items-center text-white gap-3 "  onClick={() => setNavigator('users')}><span className="text-white"><MdEngineering /></span>Engineers</li>
+                    
+                   <li className="flex cursor-pointer items-center text-white gap-3 " onClick={() => setNavigator('works')}><span className="text-white"><GiAutoRepair /></span>Works</li>
+                    
                   </ul>
                 </div>
                 <button className="absolute bottom-10 flex items-center gap-2 text-white" onClick={logOutAdmin}><ImExit />Sign out</button>
@@ -126,10 +127,10 @@ const Admin = () => {
               {/* main section */}
               <div className='w-full relative  overflow-y-auto '>
 
-                {paramsName === 'admins' && <Admins />}
-                {paramsName === 'admin' && <AdminHome />}
-                {paramsName === 'users' && <Users />}
-                {paramsName === 'works' && <Works />}
+                {navigator === 'admins' && <Admins />}
+                {navigator === 'admin' && <AdminHome />}
+                {navigator === 'users' && <Users />}
+                {navigator === 'works' && <Works />}
 
               </div>
 
@@ -141,4 +142,4 @@ const Admin = () => {
   )
 }
 
-export default Admin;
+export default withAuth(Admin);
