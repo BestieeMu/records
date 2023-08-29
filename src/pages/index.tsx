@@ -23,6 +23,7 @@ import { auth } from "../../firebase/clientApp";
 import NavBar from "../Components/navbar";
 
 import { withAuth } from "@/hook/Auth";
+import Loading from "@/Components/custome-loader/Loading";
 
 
 
@@ -278,7 +279,7 @@ const Home = () => {
 
       {loading ? (<>
         <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
-        <div className="custom-loader"></div>
+        <Loading />
         </div>
       </>)
         :
@@ -330,7 +331,7 @@ const Home = () => {
                         {/* //////////// */}
                         {/* count display box */}
                         <div className="w-52 flex flex-col gap-2 p-5 items-center">
-                          <p>Total Repaired</p>
+                          <p>Total Recieved Work</p>
                           <h1 className="text-3xl font-bold">{totalWork}</h1>
                         </div>
                         {/* //////////// */}

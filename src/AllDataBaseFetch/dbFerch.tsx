@@ -34,6 +34,12 @@ const DbFerch = () => {
   }, 0);
   getDeviceChartDate(totalGood, totalBad, totalWork )
 
+
+
+
+
+
+
     useEffectOnce(() => {
       adminData &&  adminData.map((data: any) => {
         let colref = collection(firestore, "users", `${data.user?.id}`, "tasks");
@@ -88,10 +94,7 @@ const DbFerch = () => {
 
     },);
     
-   
-
-
-
+  
 }
 
 export default DbFerch

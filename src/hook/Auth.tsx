@@ -1,69 +1,70 @@
-'use client'
-import { useRouter } from 'next/router';
-import React, { useState } from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase/clientApp';
-import { doc, getDoc } from 'firebase/firestore';
-import { firestore } from '../../firebase/clientApp';
-import exp from 'constants';
+"use client";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/clientApp";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "../../firebase/clientApp";
+import Loading from "@/Components/custome-loader/Loading";
 
 export const withAuth = (MyPages: any) => {
 
-    return function WithAuth(props: any) {
+  return function WithAuth(props: any) {
 
-        const [user, loading, error] = useAuthState(auth);
-        const router = useRouter();
+    const [user, loading, error] = useAuthState(auth);
+    const router = useRouter();
+
+    const admin = async () => {
+      // getting the admin id from the admin collection in the database
+      let adminRef = doc(firestore, "admin", `${user?.uid}`);
+
+      const docSnap = await getDoc(adminRef);
+
     
+      if (!loading && !user) {
+        return router.push("/login");
+      }
 
-        const admin = async () => {
+      if (loading) {
+        return (
+          <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
+            <Loading />
+          </div>
+        );
+      }
 
-            // getting the admin id from the admin collection in the database
-            let adminRef = doc(firestore, "admin", `${user?.uid}`);
+      if (docSnap.exists()) {
+        if (user?.uid === docSnap.data().id) {
+          router.push("/admin");
 
-            const docSnap = await getDoc(adminRef);
+          return (
+            <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
+            <Loading />
+          </div>
+          );
+        }
+      } else {
+        if (user?.uid !== docSnap.data()?.id) {
+          router.replace("/");
+          return (
+            <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
+            <Loading />
+          </div>
+          );
+        }
+      }
 
-            if (loading) {
-
-                return <div><h1>Loading...</h1></div>;
-
-            } else {
-
-                if (!user) {  
-                    return router.push('/login');
-                } else {
-                    if (docSnap.exists()) {
-
-                            if (user?.uid === docSnap.data().id) {
-                                router.push('/admin');
-
-                                return <div><h1>Loading...</h1></div>;
-                            }
-                      
-
-                    } else {
-
-                        if (user?.uid !== docSnap.data()?.id) {
-
-                            router.replace('/');
-                            return <div><h1>Loading...</h1></div>;
-                        }
-                        console.log('no admin record found');
-                    }
-                }
-            }
-
-            return <div><h1>Loading..</h1></div>
-        };
-
-
-        admin();
-
-
-        return <MyPages {...props} />;
+      return (
+        <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
+            <Loading />
+          </div>
+      );
     };
 
+    useEffect(() => {
+      admin();
+    }, [user]);
 
-}
-
-
-
+    return <MyPages {...props} />;
+  };
+};

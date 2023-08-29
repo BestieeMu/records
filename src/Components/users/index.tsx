@@ -1,6 +1,7 @@
 import { MainContext } from '@/Context/MainContex'
 import React, { useContext } from 'react'
 import { FiClipboard } from 'react-icons/fi'
+import { BsThreeDotsVertical } from 'react-icons/bs'
 
 const Users = () => {
   const { adminData, users } = useContext(MainContext)
@@ -22,7 +23,8 @@ const Users = () => {
             <span className='text-3xl'><FiClipboard /></span>
             <h1 className='text-xl font-medium'>{user.user_name}</h1>
             <h1 className='text-xl font-medium'>{user.email}</h1>
-            <button className='w-32 h-12 hover:bg-red-500 hover:text-white hover:border-0 rounded-tr-lg rounded-br-lg rounded-bl-lg border-2 text-center'>View Work</button>
+            <button className='w-32 h-12 hover:bg-red-500 hover:text-white hover:border-0 rounded-tr-lg rounded-br-lg rounded-bl-lg border-2 text-center '>View Work  </button>
+            <span><BsThreeDotsVertical /></span>
           </div>
               </>
             ))}

@@ -7,6 +7,7 @@ import { Toaster, toast } from 'react-hot-toast';
 
 import { auth } from '../../../firebase/clientApp'
 import { withAuth } from "@/hook/Auth";
+import Loading from "@/Components/custome-loader/Loading";
 
 
 
@@ -14,6 +15,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<any>('')
   const [password, setPassword] = useState<any>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [pageLoading, setPageLoading] = useState<boolean>(false)
 
 
 
@@ -25,6 +27,7 @@ const Login: React.FC = () => {
         const user = userCredential.user;
        
         toast.success('Successfully toasted!')
+        setPageLoading(true)
         setIsLoading(false)
         setEmail('')
         setPassword('')
@@ -46,6 +49,11 @@ const Login: React.FC = () => {
     
   return (
     <>
+{pageLoading ? (<>
+        <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
+        <Loading />
+        </div>
+      </>) : 
       <div className="flex justify-center items-center w-full h-screen">
 
         <div className="flex flex-col w-96  h-96 p-4 items-center justify-center gap-8">
@@ -71,6 +79,7 @@ const Login: React.FC = () => {
         />
 
       </div>
+      }
 
     </>
   )
