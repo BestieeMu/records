@@ -416,7 +416,7 @@ const Home = () => {
                       {isloading ? (
                         <div className="w-full h-52  flex justify-center items-center">
                           <span className="flex items-center gap-4">
-                            <h1 className="text-4xl font-bold">
+                            <h1 className="text-4xl text-white font-bold">
                               loading records...
                             </h1>
                           </span>
@@ -425,7 +425,7 @@ const Home = () => {
                         data.length === 0 && (
                           <div className="w-full h-52  flex justify-center items-center">
                             <span className="flex items-center gap-4">
-                              <h1 className="text-4xl font-bold">
+                              <h1 className="text-4xl text-white font-bold">
                                 Add new records
                               </h1>
                               <FontAwesomeIcon
