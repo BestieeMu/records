@@ -6,10 +6,12 @@ interface MainContextProps {
   engineerChart: any[],
   adminName: string,
   users: any,
+  color: string,
   goodDevice: number,
   badDevice: number,
   totalRepair: number,
   updateData: (data: any)=> void,
+  getAllColor: (color: string)=> void,
   updateAdminName: (name: string)=> void,
   getUserDate: (user: any)=> void,
   getEngineerChartDate: (ChartData: any)=> void,
@@ -26,10 +28,12 @@ export const MainContext = createContext<MainContextProps>({
   engineerChart: [],
   adminName: '',
   users: '',
+  color: '',
   goodDevice: 0,
   badDevice: 0,
   totalRepair: 0,
   updateData: () => {},
+  getAllColor: () => {},
   updateAdminName: () => {},
   getUserDate: () => {},
   getEngineerChartDate: () => {},
@@ -48,11 +52,17 @@ const [goodDevice, setGoodDevice] = useState<any>(0)
 const [badDevice, setBadDevice] = useState<any>(0)
 const [totalRepair, setTotalRepair] = useState<any>(0)
 const [engineerChart, setEngineerChart] = useState<any>([])
+const [color, setColor] = useState<string>('red')
 
 //Add functions to update your state
 const updateData = (data: any) =>{
   setAdminData(data)
 }
+
+const getAllColor = (color: string) =>{
+  setColor(color)
+}
+
 
 const updateAdminName = (name: string) =>{
   setAdminName(name)
@@ -84,10 +94,12 @@ return (
         users,
         goodDevice,
         badDevice,
+        color,
         totalRepair,
         engineerChart,
         getUserDate,
         updateData,
+        getAllColor,
         updateAdminName,
         getDeviceChartDate,
         getEngineerChartDate

@@ -6,6 +6,7 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import {
+  useContext,
   useEffect,
   useState
 } from "react";
@@ -25,6 +26,7 @@ import NavBar from "../Components/navbar";
 import { withAuth } from "@/hook/Auth";
 import Loading from "@/Components/custome-loader/Loading";
 import Image from "next/image";
+import { MainContext } from "@/Context/MainContex";
 
 
 
@@ -59,6 +61,8 @@ const Home = () => {
 
   }, []);
 
+
+  const { color } = useContext(MainContext)
 
   const clearForm = () => {
     setBadDevice("");
@@ -312,10 +316,11 @@ const Home = () => {
                   {/* first components which is the welcome message and action button */}
                   <div className="w-full flex relative justify-between items-center  px-6 h-32"
                   style={{
-                    backgroundImage: `url('https://res.cloudinary.com/dmbsct2bo/image/upload/v1693573091/samples/afrifarm/pattern_waves-4_0.5_2_0-0_40_1__e00b0b_cfcfcf_vtnadh.png')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
+                    // backgroundImage: `url('https://res.cloudinary.com/dmbsct2bo/image/upload/v1693573091/samples/afrifarm/pattern_waves-4_0.5_2_0-0_40_1__e00b0b_cfcfcf_vtnadh.png')`,
+                    // backgroundRepeat: 'no-repeat',
+                    // backgroundSize: 'cover',
+                    // backgroundPosition: 'center'
+                    backgroundColor: `${color}`
                   }}
                   >
                       <Image

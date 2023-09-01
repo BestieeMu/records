@@ -5,7 +5,48 @@ import { auth } from "../../firebase/clientApp";
 import { signOut } from "firebase/auth";
 import { Toaster, toast } from "react-hot-toast";
 import { ImExit } from 'react-icons/im'
+import { AiFillCaretDown } from 'react-icons/ai'
+import { MainContext } from "@/Context/MainContex";
+import { useContext, useEffect, useState } from "react";
+
+const colors = [
+  {
+    color: 'blue',
+    text: 'blue'
+  },
+  {
+    color: 'red',
+    text: 'red'
+  },
+  {
+    color: 'indianred',
+    text: 'indianred'
+  },
+  {
+    color: 'purple',
+    text: 'purple'
+  },
+  {
+    color: 'olive',
+    text: 'olive'
+  },
+  {
+    color: 'navy',
+    text: 'navy'
+  },
+  {
+    color: 'hotpink',
+    text: 'hotpink'
+  },
+  {
+    color: 'indigo',
+    text: 'indigo'
+  },
+]
+
 const NavBar = () => {
+const [dropDown, setDropDown] = useState(false)
+  const { getAllColor, color } = useContext(MainContext)
 
   const logOut = (e: any) =>{
 e.preventDefault()
@@ -16,6 +57,14 @@ signOut(auth).then(() => {
    alert('error loging out user')
 });
 
+  }
+
+  const setColor = (color: string) =>{
+    getAllColor(color)
+    setDropDown(!dropDown)
+  }
+  const openDropDown = () =>{
+    setDropDown(!dropDown)
   }
 
   return (
@@ -38,9 +87,43 @@ signOut(auth).then(() => {
       </div>
 
 {/* profile */}
-      <div className="flex items-center gap-3 bg-white h-12 mr-14">
-<div className='w-10 h-10 bg-white flex items-center h-12 justify-center'>
+      <div className="flex items-center relative gap-7 bg-white h-12 mr-14">
+<div className="flex items-center cursor-pointer gap-1" onClick={openDropDown}>
+  {/* select color */}
+<div className={`w-8 h-8 rounded-full flex items-center h-12 justify-center`}
+style={{
+  backgroundColor: `${color}`
+}}
+>
 </div>
+<span><AiFillCaretDown /></span>
+</div>
+
+{/* drop down colors */}
+{
+dropDown &&
+  <div className="bg-white drop-shadow-md flex items-center justify-center py-2 px-2 flex-col absolute top-[100%] right-0 w-[200px] rounded">
+
+  {
+    colors.map(({color, text}) =>(
+      <>
+      <div className="flex items-center hover:bg-red-400 w-10/12 px-4 cursor-pointer py-1 gap-3 justify-start" onClick={() => setColor(color)}>
+    {/* select color */}
+  <div className={`w-5 h-5 rounded-full flex items-center h-12 justify-center`}
+  style={{
+    backgroundColor: `${color}`
+  }}
+  >
+  </div>
+  <span className="text-center">{text}</span>
+  </div>
+      </>
+    ))
+  }
+  
+  </div>
+}
+
 <div className=" rounded text-red-500 text-3xl cursor-pointer" onClick={logOut}><ImExit /></div>
       </div>
       <Toaster
