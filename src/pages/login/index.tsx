@@ -59,20 +59,20 @@ const Login: React.FC = () => {
 
         <div className="flex flex-col w-96  h-96 p-4 items-center justify-center gap-8">
 
-          <h1 className="text-2xl font-bold">Login</h1>
+          <h1 className="text-4xl text-white font-bold">Login</h1>
 
           <input type="email"
-            className="h-10 w-full outline-none px-2 "
+            className="h-10 w-full bg-transparent placeholder-white placeholder-opacity-75 border-white border-b-2 text-white outline-none px-2 "
             placeholder="email@gmail.com"
             onChange={e => { setEmail(e.currentTarget.value); }}
           />
           <input type="password"
-            className="h-10 w-full outline-none px-2 "
+            className="h-10 w-full bg-transparent placeholder-white placeholder-opacity-75  border-white border-b-2 text-white outline-none px-2 "
             placeholder="password"
             onChange={e => { setPassword(e.currentTarget.value); }}
           />
 
-          <button className="h-10 bg-red-500 text-white w-full " onClick={login}>{isLoading ? 'Loging...' : 'Login'}</button>
+          <button className="h-10 bg-white text-black w-full " onClick={login}>{isLoading ? 'Loging...' : 'Login'}</button>
         </div>
         <Toaster
           position="top-center"

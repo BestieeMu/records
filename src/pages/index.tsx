@@ -310,10 +310,10 @@ const Home = () => {
                 <div className=" over-flow-scroll w-full px-5 ml-14 py-3">
                   {/* first components which is the welcome message and action button */}
                   <div className="w-full flex justify-between mt-20 p-2 ">
-                    <h2 className="text-4xl font-bold">Welcome, {user_name}</h2>
+                    <h2 className="text-4xl text-white font-bold">Welcome, {user_name}</h2>
                     {/* Add button */}
                     <button
-                      className="bg-red-500 p-1 text-white px-2 flex items-center gap-3 rounded hover:bg-red-400"
+                      className="bg-transparent border-2 border-white p-1 text-white px-2 flex items-center gap-3 rounded hover:bg-red-400"
                       onClick={showModal}
                     >
                       <span>
@@ -351,12 +351,12 @@ const Home = () => {
                       </div>
 
                       <div className=" w-5/12 p-2">
-                        <p className="text-3xl">
+                        <p className="text-3xl text-white">
                           {quote == ""
                             ? "Quotes loading..."
                             : `"${quote?.text}"`}
                         </p>
-                        <p className="text-lg mt-3">{quote?.author}</p>
+                        <p className="text-lg text-white mt-3">{quote?.author}</p>
                       </div>
                     </div>
                   </div>
@@ -369,7 +369,7 @@ const Home = () => {
                     <div className="w-10/12">
                       <table className="table-auto w-full px-4 css-serial">
                         <thead>
-                          <tr className="h-12 ">
+                          <tr className="h-12 text-white">
                             <th className="w-20">S/N</th>
                             <th className="text-start">Device type</th>
                             <th className="text-start">Good Ones</th>

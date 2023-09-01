@@ -17,9 +17,11 @@ html{
     border-top: 3px solid rgb(241, 241, 241);
 }
 .body tr:nth-child(odd){
-    background-color: rgb(255, 255, 255);  
-    border-radius: 30%;
-    background-color: rgba(0, 0, 0, 0.178);
+    background-color: rgb(255, 255, 255);    
+}
+
+.body tr:nth-child(even){
+    background-color: rgb(220, 220, 220);    
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button
@@ -47,7 +49,7 @@ input[type=number]::-webkit-outer-spin-button
 .custom-loader {
     width: 50px;
     height: 50px;
-    color:#c4140e;
+    color:#efecec;
     position: relative;
     background:
       conic-gradient(from 134deg at top   ,currentColor 92deg,#0000 0) top,
