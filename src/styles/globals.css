@@ -17,12 +17,10 @@ html{
     border-top: 3px solid rgb(241, 241, 241);
 }
 .body tr:nth-child(odd){
-    background-color: rgb(255, 255, 255);    
+    background-color: rgb(221, 221, 221);    
 }
 
-.body tr:nth-child(even){
-    background-color: rgb(220, 220, 220);    
-}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button
 {

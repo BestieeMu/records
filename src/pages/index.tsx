@@ -24,6 +24,7 @@ import NavBar from "../Components/navbar";
 
 import { withAuth } from "@/hook/Auth";
 import Loading from "@/Components/custome-loader/Loading";
+import Image from "next/image";
 
 
 
@@ -307,10 +308,24 @@ const Home = () => {
               <div className="w-full flex mt-12 pb-20 ">
               
                 {/* the main section for the content */}
-                <div className=" over-flow-scroll w-full px-5 ml-14 py-3">
+                <div className=" over-flow-scroll w-full  ">
                   {/* first components which is the welcome message and action button */}
-                  <div className="w-full flex justify-between mt-20 p-2 ">
-                    <h2 className="text-4xl text-white font-bold">Welcome, {user_name}</h2>
+                  <div className="w-full flex relative justify-between items-center  px-6 h-32"
+                  style={{
+                    backgroundImage: `url('https://res.cloudinary.com/dmbsct2bo/image/upload/v1693573091/samples/afrifarm/pattern_waves-4_0.5_2_0-0_40_1__e00b0b_cfcfcf_vtnadh.png')`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                  >
+                      <Image
+          src={ 'https://res.cloudinary.com/dmbsct2bo/image/upload/v1693579124/samples/afrifarm/christmas-stars_sn37za.png' }
+          width={100}
+          height={100}
+          alt="product image"
+          className=" group-hover:scale-110 absolute top-0  transition w-[50px] md:h-[50px] h-[50px] rounded "
+        />
+                    <h2 className="text-4xl text-white font-bold ">Welcome, {user_name}</h2>
                     {/* Add button */}
                     <button
                       className="bg-transparent border-2 border-white p-1 text-white px-2 flex items-center gap-3 rounded hover:bg-red-400"
@@ -351,12 +366,12 @@ const Home = () => {
                       </div>
 
                       <div className=" w-5/12 p-2">
-                        <p className="text-3xl text-white">
+                        <p className="text-3xl text-black">
                           {quote == ""
                             ? "Quotes loading..."
                             : `"${quote?.text}"`}
                         </p>
-                        <p className="text-lg text-white mt-3">{quote?.author}</p>
+                        <p className="text-lg  mt-3">{quote?.author}</p>
                       </div>
                     </div>
                   </div>
@@ -369,7 +384,7 @@ const Home = () => {
                     <div className="w-10/12">
                       <table className="table-auto w-full px-4 css-serial">
                         <thead>
-                          <tr className="h-12 text-white">
+                          <tr className="h-12 ">
                             <th className="w-20">S/N</th>
                             <th className="text-start">Device type</th>
                             <th className="text-start">Good Ones</th>
@@ -416,7 +431,7 @@ const Home = () => {
                       {isloading ? (
                         <div className="w-full h-52  flex justify-center items-center">
                           <span className="flex items-center gap-4">
-                            <h1 className="text-4xl text-white font-bold">
+                            <h1 className="text-4xl font-bold">
                               loading records...
                             </h1>
                           </span>
@@ -425,7 +440,7 @@ const Home = () => {
                         data.length === 0 && (
                           <div className="w-full h-52  flex justify-center items-center">
                             <span className="flex items-center gap-4">
-                              <h1 className="text-4xl text-white font-bold">
+                              <h1 className="text-4xl font-bold">
                                 Add new records
                               </h1>
                               <FontAwesomeIcon

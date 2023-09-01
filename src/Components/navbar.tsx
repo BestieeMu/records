@@ -33,7 +33,7 @@ signOut(auth).then(() => {
 </div>
       </div>
 <div className="w-72 font-bold flex items-center rounded">
-<h1>Device Records</h1>
+<h1><span className="text-red-500">Device</span> Records</h1>
 </div>
       </div>
 

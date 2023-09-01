@@ -50,8 +50,14 @@ const Login: React.FC = () => {
     
   return (
     <>
-{pageLoading ? (<>
-        <div className="w-full h-screen text-3xl font-medium flex items-center justify-center">
+    <main className="w-full h-screen" style={{
+          backgroundImage: `url('https://res.cloudinary.com/dmbsct2bo/image/upload/v1693573091/samples/afrifarm/pattern_waves-4_0.5_2_0-0_40_1__e00b0b_cfcfcf_vtnadh.png')`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}>
+    {pageLoading ? (<>
+        <div className="w-full h-screen text-3xl font-medium flex items-center justify-center" >
         <Loading />
         </div>
       </>) : 
@@ -81,6 +87,8 @@ const Login: React.FC = () => {
 
       </div>
       }
+    </main>
+
 
     </>
   )
