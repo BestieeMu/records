@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { firestore } from '../../../firebase/clientApp';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { FiClipboard } from 'react-icons/fi'
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 const Admins = () => {
   const [data, setData] = useState<any>([]);
@@ -32,7 +33,9 @@ const Admins = () => {
             <span className='text-3xl'><FiClipboard /></span>
             <h1 className='text-xl font-medium'>{user.user_name}</h1>
             <h1 className='text-xl font-medium'>{user.email}</h1>
-            <button className='w-32 h-12 rounded-tr-lg rounded-br-lg rounded-bl-lg border-2 text-center'>View Work</button>
+            {/* <button className='w-32 h-12 rounded-tr-lg rounded-br-lg rounded-bl-lg border-2 text-center'>View Work</button> */}
+            <span><BsThreeDotsVertical /></span>
+
           </div>
               </>
             ))}

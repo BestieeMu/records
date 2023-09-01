@@ -1,8 +1,9 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import { auth, firestore } from "../../../firebase/clientApp";
+import { auth, firestore,  } from "../../../firebase/clientApp";
 import { Toaster, toast } from "react-hot-toast";
 import {
+  Firestore,
   collection,
   doc,
   getDoc,
@@ -14,7 +15,10 @@ import { MainContext } from "@/Context/MainContex";
 import { Chart } from "react-google-charts";
 import { useEffectOnce } from "usehooks-ts";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { withAuth } from "@/hook/Auth";
+import firebase from "firebase/app";
+
 
 const AdminHome = () => {
   const [quote, setQuote] = useState<any>("");
@@ -80,24 +84,6 @@ const AdminHome = () => {
     console.log("input cleard");
   };
 
-  const { adminName, updateAdminName, users, getUserDate, updateData } =
-    useContext(MainContext);
-
-  // this function gets the users information like the users name and email
-  const userInfo = async () => {
-    if (validationId) {
-      const docRef = doc(firestore, "admin", `${validationId}`);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        console.log("Document data:");
-
-        updateAdminName(docSnap.data().user_name);
-      }
-    }
-  };
-  if (user) {
-    userInfo();
-  }
 
   // toggles modal for creating users
   const showModal = (e: any) => {
@@ -171,127 +157,50 @@ const AdminHome = () => {
     </>
   );
 
-  const { adminData } = useContext(MainContext);
 
-  // check total work done by adding up total task
-  let totalWork =
-    adminData &&
-    adminData?.reduce((total: any, currentValue: any) => {
-      return total + currentValue.works.total_device_repair;
-    }, 0);
 
-  // check total good device done by adding up all the good devices
-  let totalGood =
-    adminData &&
-    adminData?.reduce((total: any, currentValue: any) => {
-      return total + currentValue.works.good_device;
-    }, 0);
-
-  // check total bad device done by adding up all the bad devices
-  let totalBad =
-    adminData &&
-    adminData?.reduce((total: any, currentValue: any) => {
-      return total + currentValue.works.bad_device;
-    }, 0);
-
-  // chart data for device
-  const deviceData = [
-    ["condition", "Amount of devices"],
-    ["Bad Devices", totalBad],
-    ["Good Devices", totalGood],
-    ["Total Repaird Devices", totalWork],
-  ];
-
-  const device = {
-    title: "Repaired Devices Chart",
-    is3D: true,
-  };
 
   const [userData, setUserData] = useState<any>([]);
-  const [userD, setUserD] = useState<any>([]);
+  const [userD, setUserD] = useState([]);
   const [userWorkData, setUserWorkData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchUserData = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(firestore, "users"));
-      let datarec: any = [];
-      querySnapshot.forEach((doc: any) => {
-        datarec.push({ ...doc.data() });
-      });
-          getUserDate(datarec)
-          ///////////////////////////////////
+const getUserData = () =>{
+  let colref = collection(firestore, "users");
 
-
-     datarec && datarec.map(async (data: any) => {
-        let colref = collection(firestore, "users", `${data.id}`, "tasks");
-        //////////////////////////
-try {
-  const subCollectionSnapshot = await getDocs(colref);
-  let dataRec: any = [];
-  const user_Data: any = [];
-   subCollectionSnapshot.forEach((subDoc) => {
-    dataRec.push({ ...subDoc.data() });
-
-console.log(dataRec);
-
-    /////////////////////
-
-    user_Data.push({
-      user: data,
-      works: subDoc.data(),
+  onSnapshot(colref, (snaoshot: any) => {
+    let datarec: any = [];
+    snaoshot.forEach((doc: any) => {
+      datarec.push({ ...doc.data(), id: doc.data().id });
+      setUserD(datarec);
+      setIsLoading(false)
     });
-    // setUserData(subDoc.data());
-    updateData(user_Data);
-
-    ////////////////////////
-
-    // let total_Good_work = dataRec.reduce(
-    //   (total: any, currentValue: any) => {
-    //     return total + currentValue.good_device;
-    //   },
-    //   0
-    // );
-
-    // setUserD((prevData: any) => [
-    //   ...prevData,
-    //   { userName: data.user_name, total_Good_work },
-    // ]);
   });
-  
-} catch (error) {
-  console.log(error);
-  
+
 }
+
+  useEffectOnce(() =>{
+    getUserData()
+
+  })
+
+  useEffect(() => {
+    console.log("userD:", userD); 
+    if (!isLoading && userD.length > 0) { // Check if userD has data and isLoading is false
+      userD.forEach(({ id, email }) => {
+        const unsub = onSnapshot(collection(firestore, "users", `${id}`, "tasks"), (doc) => {
+          let taskData: any = [];
+          doc.forEach((taskDoc: any) => {
+            taskData.push({ ...taskDoc.data(), id: taskDoc.id }); // Use taskDoc.id instead of taskDoc.data().id
+          });
+          console.log("Task data for user", email, ":", taskData); 
+          setIsLoading(false); // Consider whether this should be here
+        });
       });
-      /////////////////////////////////////////
-
-
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setIsLoading(false); // Make sure to set isLoading to false in case of an error too.
     }
-  };
-
-  useEffectOnce(() => {
-    fetchUserData();
-  });
-// console.log(adminData);
-// console.log(userD);
-
-
-
+  }, [isLoading, userD]); // Add isLoading and userD as dependencies
   
 
-  const usersData = [
-    ["condition", "Amount of devices"],
-    ...userWorkData?.map((item: any) => [item.userName, item.totalWork]),
-  ];
-
-  const userWork = {
-    title: "Engineers Works Charts",
-    is3D: true,
-  };
 
   return (
     <>
@@ -299,7 +208,7 @@ console.log(dataRec);
       <div className="flex flex-col items-center">
         {/* first components which is the welcome message and action button */}
         <div className="w-11/12 flex justify-between mt-20 p-2 ">
-          <h2 className="text-4xl font-bold">Welcome, {adminName}</h2>
+          <h2 className="text-4xl font-bold">Welcome, {'adminName'}</h2>
 
           {/* Add button */}
           <select
@@ -327,19 +236,19 @@ console.log(dataRec);
               {/* count display box */}
               <div className="w-52 flex flex-col gap-2 p-5 items-center">
                 <p>Total Good</p>
-                <h1 className="text-3xl font-bold">{totalGood}</h1>
+                <h1 className="text-3xl font-bold">{'totalGood'}</h1>
               </div>
               {/* //////////// */}
               {/* count display box */}
               <div className="w-52 flex flex-col gap-2 p-5 items-center">
                 <p>Total Bad</p>
-                <h1 className="text-3xl font-bold">{totalBad}</h1>
+                <h1 className="text-3xl font-bold">{'totalBad'}</h1>
               </div>
               {/* //////////// */}
               {/* count display box */}
               <div className="w-52 flex flex-col gap-2 p-5 items-center">
-                <p>Total Recieved Work</p>
-                <h1 className="text-3xl font-bold">{totalWork}</h1>
+                <p>Total Device Recieved</p>
+                <h1 className="text-3xl font-bold">{'totalWork'}</h1>
               </div>
               {/* //////////// */}
             </div>
@@ -359,25 +268,7 @@ console.log(dataRec);
             the good ones,total and and current date.///////*/}
         <div className="w-11/12 gap-3 flex mb-10  justify-around  mt-28">
           {/* chart for device in repair */}
-          <div className="w-9/12">
-            <Chart
-              chartType="PieChart"
-              data={deviceData}
-              options={device}
-              width={"100%"}
-              height={"400px"}
-            />
-          </div>
-          {/* for users per work */}
-          <div className="w-9/12 ">
-            <Chart
-              chartType="PieChart"
-              data={usersData}
-              options={userWork}
-              width={"100%"}
-              height={"400px"}
-            />
-          </div>
+      {/* ////////////////////////// */}
         </div>
       </div>
     </>

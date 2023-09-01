@@ -25,20 +25,21 @@ const Login: React.FC = () => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-       
+        setEmail("")
+        setPassword('')
         toast.success('Successfully toasted!')
         setPageLoading(true)
         setIsLoading(false)
-        setEmail('')
-        setPassword('')
+      
         return user;
         // ...
       })
       .catch((error) => {
-        toast.error("wrong crediential ")
-        setIsLoading(false)
         setEmail('')
         setPassword('')
+        toast.error("wrong crediential ")
+        setIsLoading(false)
+        
       });
       
 

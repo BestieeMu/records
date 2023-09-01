@@ -21,7 +21,7 @@ export const withAuth = (MyPages: any) => {
       const docSnap = await getDoc(adminRef);
 
     
-      if (!loading && !user) {
+      if ( !user) {
         return router.push("/login");
       }
 

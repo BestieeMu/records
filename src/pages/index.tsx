@@ -33,6 +33,7 @@ const Home = () => {
   const [device, setDevice] = useState("");
   const [goodDevice, setGoodDevice] = useState<any>("");
   const [badDevice, setBadDevice] = useState<any>("");
+  const [date, setDate] = useState<any>("");
   const [data, setData] = useState<any>([]);
   const [isloading, setIsLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<any>("");
@@ -94,7 +95,7 @@ const Home = () => {
             good_device: good,
             bad_device: bad,
             total_device_repair: totalWork,
-            date_doc_add: now.toLocaleString(),
+            date_doc_add: date,
             id: randomId.toString(),
           }
         );
@@ -204,7 +205,7 @@ const Home = () => {
       <div
         className={
           showAddForm
-            ? " absolute flex justify-center items-center w-full h-screen"
+            ? " absolute flex justify-center z-20 items-center w-full h-screen"
             : " hidden "
         }
         style={{
@@ -252,6 +253,18 @@ const Home = () => {
                 className="w-11/12 col-span-2  h-10 px-2 rounded border outline-none"
                 placeholder="Bad devices"
               />
+
+              <input
+                type="date"
+                required
+                value={date}
+                onChange={(e) => {
+                  setDate(e.currentTarget.value);
+                }}
+                className="w-11/12 col-span-2  h-10 px-2 rounded border outline-none"
+                
+              />
+
             </form>
           </div>
           {/* button group */}
@@ -361,7 +374,7 @@ const Home = () => {
                             <th className="text-start">Device type</th>
                             <th className="text-start">Good Ones</th>
                             <th className="text-start">Bad Ones</th>
-                            <th className="text-start">Total Repair</th>
+                            <th className="text-start">Total Device Recieved</th>
                             <th className="text-start">Date</th>
                           </tr>
                         </thead>
