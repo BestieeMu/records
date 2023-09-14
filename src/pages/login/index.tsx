@@ -70,11 +70,13 @@ const Login: React.FC = () => {
           <input type="email"
             className="h-10 w-full bg-transparent placeholder-white placeholder-opacity-75 border-white border-b-2 text-white outline-none px-2 "
             placeholder="email@gmail.com"
+            value={email}
             onChange={e => { setEmail(e.currentTarget.value); }}
           />
           <input type="password"
             className="h-10 w-full bg-transparent placeholder-white placeholder-opacity-75  border-white border-b-2 text-white outline-none px-2 "
             placeholder="password"
+            value={password}
             onChange={e => { setPassword(e.currentTarget.value); }}
           />
 
